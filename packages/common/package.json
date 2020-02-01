@@ -1,7 +1,7 @@
 {
-  "name": "@papyrus/get-templates",
+  "name": "@papyrus/common",
   "version": "0.0.0-development",
-  "description": "template manager for papyrus",
+  "description": "common values and types for papyrus",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
@@ -18,9 +18,5 @@
   },
   "homepage": "https://github.com/Xiphe/papyrus#readme",
   "devDependencies": {},
-  "dependencies": {
-    "@papyrus/config": "0.0.0-development",
-    "@papyrus/common": "0.0.0-development",
-    "fast-glob": "3.1.1"
-  }
+  "dependencies": {}
 }

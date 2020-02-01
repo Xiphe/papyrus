@@ -1,26 +1,41 @@
 {
-  "name": "@papyrus/get-templates",
+  "name": "@papyrus/core",
   "version": "0.0.0-development",
-  "description": "template manager for papyrus",
+  "description": "papyrus core",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
     "watch": "tsc --watch"
   },
+  "targets": {
+    "node": {
+      "context": "node",
+      "outputFormat": "commonjs",
+      "isLibrary": true
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/Xiphe/papyrus.git"
   },
+  "keywords": [
+    "pdf",
+    "print",
+    "layout",
+    "automation",
+    "cli",
+    "node",
+    "library"
+  ],
   "author": "Hannes Diercks <node@xiphe.net> (https://xiphe.net/)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Xiphe/papyrus/issues"
   },
   "homepage": "https://github.com/Xiphe/papyrus#readme",
-  "devDependencies": {},
   "dependencies": {
-    "@papyrus/config": "0.0.0-development",
     "@papyrus/common": "0.0.0-development",
-    "fast-glob": "3.1.1"
-  }
+    "@papyrus/get-templates": "0.0.0-development"
+  },
+  "devDependencies": {}
 }

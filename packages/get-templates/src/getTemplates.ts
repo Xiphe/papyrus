@@ -1,18 +1,9 @@
-import fg, { Options } from 'fast-glob';
+import fg from 'fast-glob';
+import { Sys } from '@papyrus/common';
 
 type Settings = {
   configKey: string;
-  argv?: { [key: string]: string | undefined };
-  fs: Options['fs'];
-  path: {
-    join: (...paths: string[]) => string;
-    relative: (from: string, to: string) => string;
-    dirname: (p: string) => string;
-  };
-  proc: {
-    cwd: () => string;
-    env: { [key: string]: string | undefined };
-  };
+  sys: Sys;
   createDebugger?: (context: string) => (...log: any[]) => void;
 };
 type Template = { name: string; path: string };
@@ -24,12 +15,15 @@ function isObject(thing: any): thing is { [key: string]: unknown } {
 
 export default async function getTemplates({
   createDebugger = noopDebugger,
-  argv,
-  fs,
-  path: { join, relative, dirname },
-  proc,
+  sys: {
+    argv,
+    fs,
+    path: { join, relative, dirname },
+    proc,
+  },
   configKey,
 }: Settings): Promise<Template | Template[]> {
+  fs?.lstat;
   const debug = createDebugger('get-templates');
   debug('initializing');
   const cwd = proc.cwd();

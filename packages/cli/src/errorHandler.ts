@@ -1,7 +1,7 @@
-import chalk, { Chalk } from 'chalk';
+import { Logger } from '@papyrus/common';
 
 export default function errorHandler(
-  { red }: Chalk = chalk,
+  { red }: Pick<Logger['color'], 'red'> = { red: (s: string) => s },
   debug?: (...args: any[]) => void,
 ) {
   return (err: any) => {

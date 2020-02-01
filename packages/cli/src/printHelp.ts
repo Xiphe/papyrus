@@ -1,4 +1,4 @@
-import { Logger } from './createLogger';
+import { Logger } from '@papyrus/common';
 
 export default function printHelp(log: Logger, version: string) {
   const { yellow, blue, bold } = log.color;

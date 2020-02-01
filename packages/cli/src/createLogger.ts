@@ -1,8 +1,5 @@
-import { Instance, Chalk } from 'chalk';
-
-export type Logger = typeof console.log & {
-  color: Chalk;
-};
+import { Instance } from 'chalk';
+import { Logger } from '@papyrus/common';
 
 export default function createLogger(): Logger {
   const log = (...args: any[]) => console.log(...args);

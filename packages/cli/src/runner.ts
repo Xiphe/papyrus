@@ -36,16 +36,17 @@ export default async function runner({ version, name }: RunnerConfig) {
       log(`📜 ${log.color.bold(`${name} v${version}`)}`);
     }
 
-    const { default: getTemplates } = await import('@papyrus/get-templates');
-    const templates = await getTemplates({
+    const { default: papyrus } = await import('@papyrus/core');
+    await papyrus({
+      sys: {
+        path,
+        fs,
+        proc: process,
+        argv: minimist(process.argv.slice(2)),
+      },
       createDebugger,
-      path,
-      fs,
-      proc: process,
-      configKey: 'papyrus',
-      argv: minimist(process.argv.slice(2)),
+      log,
     });
-    console.log('TEMPLATES', templates);
 
     // const context: Context = {
     //   log,
