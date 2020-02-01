@@ -1,0 +1,24 @@
+{
+  "name": "@papyrus/get-templates",
+  "version": "0.0.0-development",
+  "description": "template manager for papyrus",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Xiphe/papyrus.git"
+  },
+  "author": "Hannes Diercks <node@xiphe.net> (https://xiphe.net/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Xiphe/papyrus/issues"
+  },
+  "homepage": "https://github.com/Xiphe/papyrus#readme",
+  "devDependencies": {},
+  "dependencies": {
+    "fast-glob": "3.1.1"
+  }
+}

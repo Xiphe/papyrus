@@ -1,0 +1,51 @@
+{
+  "name": "@papyrus/cli",
+  "version": "0.0.0-development",
+  "description": "cli interface for papyrus",
+  "bin": {
+    "papyrus": "dist/src/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "targets": {
+    "node": {
+      "context": "node",
+      "outputFormat": "commonjs",
+      "isLibrary": true
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Xiphe/papyrus.git"
+  },
+  "keywords": [
+    "pdf",
+    "print",
+    "layout",
+    "automation",
+    "cli",
+    "node",
+    "library"
+  ],
+  "author": "Hannes Diercks <node@xiphe.net> (https://xiphe.net/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Xiphe/papyrus/issues"
+  },
+  "homepage": "https://github.com/Xiphe/papyrus#readme",
+  "dependencies": {
+    "@papyrus/config": "0.0.0-development",
+    "@papyrus/get-templates": "0.0.0-development",
+    "chalk": "^3.0.0",
+    "debug": "4.1.1",
+    "inquirer": "^7.0.4",
+    "inquirer-autocomplete-prompt": "^1.0.1",
+    "minimist": "^1.2.0"
+  },
+  "devDependencies": {
+    "@types/debug": "4.1.5",
+    "@types/minimist": "1.2.0"
+  }
+}
