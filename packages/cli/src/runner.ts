@@ -7,6 +7,7 @@ import createLogger from './createLogger';
 import getArgv from './getArgv';
 import printHelp from './printHelp';
 import errorHandler from './errorHandler';
+import prompt from './prompt';
 
 type RunnerConfig = {
   version: string;
@@ -45,6 +46,7 @@ export default async function runner({ version, name }: RunnerConfig) {
         argv: minimist(process.argv.slice(2)),
       },
       createDebugger,
+      prompt,
       log,
     });
 
