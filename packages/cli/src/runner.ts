@@ -1,3 +1,4 @@
+import { Sys } from '@papyrus/common';
 import minimist from 'minimist';
 import path from 'path';
 import fs from 'fs';
@@ -37,29 +38,33 @@ export default async function runner({ version, name }: RunnerConfig) {
       log(`📜 ${log.color.bold(`${name} v${version}`)}`);
     }
 
-    const { default: papyrus } = await import('@papyrus/core');
-    await papyrus({
-      sys: {
-        path,
-        fs,
-        proc: process,
-        argv: minimist(process.argv.slice(2)),
-      },
+    const sys: Sys = {
+      path,
+      fs,
+      proc: process,
+      argv: minimist(process.argv.slice(2)),
+    };
+
+    const { default: config } = await import('@papyrus/config');
+    const { default: getTemplates, Config } = await import(
+      '@papyrus/get-template'
+    );
+
+    const template = await getTemplates({
+      sys,
       createDebugger,
+      configKey: 'papyrus',
       prompt,
-      log,
+      config: config({
+        key: 'papyrus',
+        type: Config,
+        rootDir: sys.proc.cwd(),
+        sys,
+        createDebugger,
+      }),
     });
 
-    // const context: Context = {
-    //   log,
-    //   createDebugger,
-    // };
-
-    // const config = await (await import('@papyrus/config')).default({
-    //   createDebugger,
-    //   configKey: NAMESPACE,
-    //   keys: ['tamplateDir'],
-    // });
+    console.log(template);
   } catch (err) {
     errorHandler(log ? log.color : undefined, debug)(err);
   }

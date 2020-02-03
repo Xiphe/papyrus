@@ -1,5 +1,5 @@
 {
-  "name": "@papyrus/get-templates",
+  "name": "@papyrus/get-template",
   "version": "0.0.0-development",
   "description": "template manager for papyrus",
   "main": "dist/index.js",

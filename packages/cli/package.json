@@ -37,6 +37,8 @@
   "homepage": "https://github.com/Xiphe/papyrus#readme",
   "dependencies": {
     "@papyrus/common": "0.0.0-development",
+    "@papyrus/config": "0.0.0-development",
+    "@papyrus/get-template": "0.0.0-development",
     "@papyrus/core": "0.0.0-development",
     "chalk": "^3.0.0",
     "debug": "4.1.1",

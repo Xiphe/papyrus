@@ -1,3 +1,5 @@
+/* shamelessly copied from untool/core */
+
 import flatten from 'flat';
 import escapeRegExp from 'escape-string-regexp';
 import isPlainObject from 'lodash.isplainobject';

@@ -1,5 +1,10 @@
 import fs from 'fs';
 import path from 'path';
+import { QuestionCollection } from 'inquirer';
+
+export type Template = { name: string; path: string };
+
+export type Prompt = <T>(questions: QuestionCollection<T>) => Promise<T>;
 
 export type Sys = {
   argv?: { [key: string]: string | undefined };

@@ -1,9 +1,14 @@
 import fg from 'fast-glob';
 import { Sys } from '@papyrus/common';
 
+import selectTemplate, { Prompt } from './selectTemplate';
+import { ConfigT } from './Config';
+
 type Settings = {
   configKey: string;
   sys: Sys;
+  prompt: Prompt;
+  config: (def: Partial<ConfigT>) => Promise<ConfigT>;
   createDebugger?: (context: string) => (...log: any[]) => void;
 };
 type Template = { name: string; path: string };
@@ -13,63 +18,44 @@ function isObject(thing: any): thing is { [key: string]: unknown } {
   return thing && typeof thing === 'object';
 }
 
-export default async function getTemplates({
+export default async function getTemplate({
   createDebugger = noopDebugger,
   sys: {
-    argv,
     fs,
     path: { join, relative, dirname },
-    proc,
+    proc: { cwd },
   },
-  configKey,
-}: Settings): Promise<Template | Template[]> {
+  prompt,
+  config,
+}: Settings): Promise<Template> {
   fs?.lstat;
   const debug = createDebugger('get-templates');
   debug('initializing');
-  const cwd = proc.cwd();
-  const { default: getConfig, optional } = await import('@papyrus/config');
-  const [config, projectPath] = await getConfig({
-    shape: {
-      rootDir: String,
-      templateName: optional(String),
-      templateDir: String,
-      templateGlob: String,
-    },
-    cwd,
-    defaults: {
-      rootDir: cwd,
-      templateDir: '<rootDir>/templates',
-      templateGlob: '*/package.json',
-    },
-    argv,
-    env: proc.env,
-    createDebugger,
-    configKey,
+  const { rootDir, templateDir, templateGlob, templateName } = await config({
+    templateDir: '<rootDir>/templates',
+    templateGlob: '*/package.json',
   });
 
-  if (config.templateName) {
+  if (templateName) {
     debug(
-      `Found Template "${config.templateName}" in ${relative(
-        cwd,
-        projectPath,
-      ) || '.'}`,
+      `Found Template "${templateName}" in ${relative(cwd(), rootDir) || '.'}`,
     );
-    return { name: config.templateName, path: projectPath };
+    return { name: templateName, path: rootDir };
   }
 
   debug('looking up templates');
 
-  const templateFiles = await fg(config.templateGlob, {
+  const templateFiles = await fg(templateGlob, {
     fs,
     absolute: true,
-    cwd: config.templateDir,
+    cwd: templateDir,
   });
 
   if (!templateFiles.length) {
     throw new Error(
       `No Papyrus templates found in ${relative(
-        cwd,
-        join(config.templateDir, config.templateGlob),
+        cwd(),
+        join(templateDir, templateGlob),
       ) || '.'}`,
     );
   }
@@ -80,16 +66,17 @@ export default async function getTemplates({
 
       if (!isObject(c)) {
         throw new Error(
-          `${relative(cwd, file) || '.'} is not a valid template`,
+          `${relative(cwd(), file) || '.'} is not a valid template`,
         );
       }
 
-      const sc = c[configKey];
-      const name = (isObject(sc) && sc.templateName) || c.name;
+      const packageConfig = c.papyrus;
+      const name =
+        (isObject(packageConfig) && packageConfig.templateName) || c.name;
 
       if (typeof name !== 'string') {
         debug(
-          `Ignoring template in ${relative(cwd, file) ||
+          `Ignoring template in ${relative(cwd(), file) ||
             '.'} because it has no name`,
         );
         return null;
@@ -112,5 +99,10 @@ export default async function getTemplates({
     }: ${filteredTemplates.map(({ name }) => name).join(', ')}`,
   );
 
-  return filteredTemplates;
+  const template = Array.isArray(templates)
+    ? await selectTemplate({ templates: filteredTemplates, prompt })
+    : templates;
+  debug('Selected template:', template);
+
+  return template;
 }

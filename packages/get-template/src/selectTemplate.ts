@@ -15,7 +15,7 @@ export default async function selectTemplate({
   const { templatePath } = await prompt([
     {
       type: 'list',
-      message: 'Please choose a papyrus template',
+      message: 'Please choose a template',
       name: 'templatePath',
       choices: templates.map(({ name, path }) => ({ name, value: path })),
     },

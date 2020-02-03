@@ -1,6 +1,4 @@
-import { Sys, Logger, CreateDebugger } from '@papyrus/common';
-
-import selectTemplate, { Prompt } from './selectTemplate';
+import { Sys, Logger, CreateDebugger, Prompt } from '@papyrus/common';
 
 export type Config = {
   sys: Sys;
@@ -17,17 +15,4 @@ export default async function papyrus({
 }: Config) {
   const debug = createDebugger('core');
   debug('initializing');
-  const { default: getTemplates } = await import('@papyrus/get-templates');
-  const sys = { argv, path, fs, proc };
-
-  const templates = await getTemplates({
-    createDebugger,
-    sys,
-    configKey: 'papyrus',
-  });
-
-  const template = Array.isArray(templates)
-    ? await selectTemplate({ templates, prompt })
-    : templates;
-  debug('Selected template:', template);
 }

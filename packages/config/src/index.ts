@@ -1,2 +1,4 @@
 export { default } from './config';
-export * from './shape';
+import * as t from 'io-ts';
+
+export { t };
