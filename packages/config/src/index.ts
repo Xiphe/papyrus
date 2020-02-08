@@ -1,4 +1,3 @@
 export { default } from './config';
-import * as t from 'io-ts';
-
-export { t };
+export { default as validate } from './validate';
+export { default as placeholdify } from './placeholdify';

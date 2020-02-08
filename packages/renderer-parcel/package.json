@@ -1,7 +1,7 @@
 {
-  "name": "@papyrus/core",
+  "name": "@papyrus/renderer-parcel",
   "version": "0.0.0-development",
-  "description": "papyrus core",
+  "description": "papyrus renderer for parcel",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
@@ -18,15 +18,7 @@
     "type": "git",
     "url": "git+ssh://git@github.com/Xiphe/papyrus.git"
   },
-  "keywords": [
-    "pdf",
-    "print",
-    "layout",
-    "automation",
-    "cli",
-    "node",
-    "library"
-  ],
+  "keywords": [],
   "author": "Hannes Diercks <node@xiphe.net> (https://xiphe.net/)",
   "license": "MIT",
   "bugs": {
@@ -35,8 +27,9 @@
   "homepage": "https://github.com/Xiphe/papyrus#readme",
   "dependencies": {
     "@papyrus/common": "0.0.0-development",
+    "@papyrus/parcel-resolver-virtual": "0.0.0-development",
     "@papyrus/config": "0.0.0-development",
-    "@textlint/module-interop": "1.0.2"
-  },
-  "devDependencies": {}
+    "get-port": "5.1.1",
+    "parcel": "2.0.0-alpha.3.2"
+  }
 }

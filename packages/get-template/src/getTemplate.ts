@@ -1,17 +1,34 @@
-import fg from 'fast-glob';
 import { Sys } from '@papyrus/common';
+import config from '@papyrus/config';
+import fg from 'fast-glob';
+import * as t from 'io-ts';
 
 import selectTemplate, { Prompt } from './selectTemplate';
-import { ConfigT } from './Config';
 
 type Settings = {
-  configKey: string;
   sys: Sys;
   prompt: Prompt;
-  config: (def: Partial<ConfigT>) => Promise<ConfigT>;
+  config: unknown;
   createDebugger?: (context: string) => (...log: any[]) => void;
 };
 type Template = { name: string; path: string };
+
+const handleUserConfig = config(
+  t.intersection([
+    t.type({
+      rootDir: t.string,
+      templateDir: t.string,
+      templateGlob: t.string,
+    }),
+    t.partial({
+      templateName: t.string,
+    }),
+  ]),
+  {
+    templateDir: '<rootDir>/templates',
+    templateGlob: '*/package.json',
+  },
+);
 
 const noopDebugger = () => () => {};
 function isObject(thing: any): thing is { [key: string]: unknown } {
@@ -26,15 +43,14 @@ export default async function getTemplate({
     proc: { cwd },
   },
   prompt,
-  config,
+  config: userConfig,
 }: Settings): Promise<Template> {
-  fs?.lstat;
   const debug = createDebugger('get-templates');
   debug('initializing');
-  const { rootDir, templateDir, templateGlob, templateName } = await config({
-    templateDir: '<rootDir>/templates',
-    templateGlob: '*/package.json',
-  });
+  const c = handleUserConfig(userConfig);
+  debug('Config: %O', c);
+
+  const { rootDir, templateDir, templateGlob, templateName } = c;
 
   if (templateName) {
     debug(
@@ -102,7 +118,7 @@ export default async function getTemplate({
   const template = Array.isArray(templates)
     ? await selectTemplate({ templates: filteredTemplates, prompt })
     : templates;
-  debug('Selected template:', template);
+  debug('Selected template: %O', template);
 
   return template;
 }

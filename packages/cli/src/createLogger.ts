@@ -1,5 +1,5 @@
-import { Instance } from 'chalk';
 import { Logger } from '@papyrus/common';
+import { Instance } from 'chalk';
 
 export default function createLogger(): Logger {
   const log = (...args: any[]) => console.log(...args);

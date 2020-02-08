@@ -23,6 +23,7 @@ export type Sys = {
   };
   proc: {
     cwd: typeof process.cwd;
+    chdir: typeof process.chdir;
     env: typeof process.env;
   };
 };
@@ -38,3 +39,10 @@ export type Logger = ((...args: any[]) => void) & {
 };
 
 export type CreateDebugger = (context: string) => (...log: any[]) => void;
+
+export type ModuleConfig = {
+  createDebugger: CreateDebugger;
+  sys: Sys;
+  log: Logger;
+  config: unknown;
+};

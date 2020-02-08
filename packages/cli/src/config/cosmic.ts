@@ -5,7 +5,7 @@ import TypeScriptLoader from '@endemolshinegroup/cosmiconfig-typescript-loader';
 export default async function getConfigFromCosmicAndEnv(
   configKey: string,
   cwd: string,
-): Promise<[unknown, string | undefined]> {
+): Promise<unknown> {
   const { config: rawConfig, filepath } =
     (await cosmiconfig(configKey, {
       loaders: {
@@ -25,8 +25,10 @@ export default async function getConfigFromCosmicAndEnv(
       ],
     }).search(cwd)) || {};
 
-  return [
-    typeof rawConfig === 'function' ? await rawConfig() : rawConfig,
-    filepath ? dirname(filepath) : filepath,
-  ];
+  return {
+    rootDir: filepath ? dirname(filepath) : filepath,
+    ...(typeof rawConfig === 'function'
+      ? (await rawConfig()) || {}
+      : rawConfig),
+  };
 }

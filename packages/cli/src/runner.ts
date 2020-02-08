@@ -1,8 +1,10 @@
 import { Sys } from '@papyrus/common';
 import minimist from 'minimist';
 import path from 'path';
+import merge from 'lodash.merge';
 import fs from 'fs';
 
+import { proc as getProcConfig, cosmic as getCosmicConfig } from './config';
 import createDebugger from './createDebugger';
 import createLogger from './createLogger';
 import getArgv from './getArgv';
@@ -45,26 +47,34 @@ export default async function runner({ version, name }: RunnerConfig) {
       argv: minimist(process.argv.slice(2)),
     };
 
-    const { default: config } = await import('@papyrus/config');
-    const { default: getTemplates, Config } = await import(
-      '@papyrus/get-template'
-    );
+    const procConfig = getProcConfig(sys);
 
-    const template = await getTemplates({
+    const { default: getTemplate } = await import('@papyrus/get-template');
+
+    const template = await getTemplate({
       sys,
       createDebugger,
-      configKey: 'papyrus',
       prompt,
-      config: config({
-        key: 'papyrus',
-        type: Config,
-        rootDir: sys.proc.cwd(),
-        sys,
-        createDebugger,
-      }),
+      config: merge(
+        {},
+        procConfig,
+        await getCosmicConfig('papyrus', sys.proc.cwd()),
+      ),
     });
 
-    console.log(template);
+    const { default: papyrus } = await import('@papyrus/core');
+
+    await papyrus({
+      sys,
+      createDebugger,
+      log,
+      prompt,
+      config: merge(
+        {},
+        procConfig,
+        await getCosmicConfig('papyrus', template.path),
+      ),
+    });
   } catch (err) {
     errorHandler(log ? log.color : undefined, debug)(err);
   }

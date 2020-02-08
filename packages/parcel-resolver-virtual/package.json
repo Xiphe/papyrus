@@ -1,7 +1,10 @@
 {
-  "name": "@papyrus/core",
+  "name": "@papyrus/parcel-resolver-virtual",
+  "engines": {
+    "parcel": "2.0.0-nightly.83"
+  },
   "version": "0.0.0-development",
-  "description": "papyrus core",
+  "description": "parcel resolver for virtual papyrus files",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
@@ -18,15 +21,7 @@
     "type": "git",
     "url": "git+ssh://git@github.com/Xiphe/papyrus.git"
   },
-  "keywords": [
-    "pdf",
-    "print",
-    "layout",
-    "automation",
-    "cli",
-    "node",
-    "library"
-  ],
+  "keywords": [],
   "author": "Hannes Diercks <node@xiphe.net> (https://xiphe.net/)",
   "license": "MIT",
   "bugs": {
@@ -34,9 +29,6 @@
   },
   "homepage": "https://github.com/Xiphe/papyrus#readme",
   "dependencies": {
-    "@papyrus/common": "0.0.0-development",
-    "@papyrus/config": "0.0.0-development",
-    "@textlint/module-interop": "1.0.2"
-  },
-  "devDependencies": {}
+    "parcel": "2.0.0-alpha.3.2"
+  }
 }
